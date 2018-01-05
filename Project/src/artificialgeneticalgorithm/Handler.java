@@ -101,7 +101,7 @@ public class Handler implements Runnable {
     /**
      * End of internal battle timer.
      */
-    private final double maxInternalTick = 1000;
+    private final double maxInternalTick = 100000;
     /**
      * Force draw.
      */
@@ -123,10 +123,6 @@ public class Handler implements Runnable {
 	for (int i = 0; i < genInfo.trackedInfo; i++) {
 	    new Thread(new GraphWindow(i)).start();
 	}
-	botList.add(new Bot(-1,-1,new Genes(
-	    new String[] {"1110","1010","1110","1110","1011","1111","1010","1011","1010","1111"}, 
-	    new String[] {"1000","1001","1011","1011","1000"}
-	)));
     }
 
     private void startBattle() {
