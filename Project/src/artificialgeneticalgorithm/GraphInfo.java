@@ -109,111 +109,105 @@ public class GraphInfo {
 	BufferedImage img = new BufferedImage(iSize,iSize,BufferedImage.TYPE_INT_ARGB);
 	Graphics g = img.getGraphics();
 	
-	boolean cond1 = minInformation.size() == maxInformation.size();
-	boolean cond2 = minQuantityInformation.size() == maxQuantityInformation.size();
-	boolean cond3 = minQuantityInformation.size() == minInformation.size();
-	boolean cond4 = minQuantityInformation.size() == avgInformation.size();
-	boolean cond = cond1 && cond2 && cond3 && cond4;
-	
-	if (!cond) 
-	    return img;
-	
-	int dotSize = 5;
-	
-	int stepX = (iSize-20)/GRAPH_GENERATIONS;
-	int stepY = (iSize-20)/((max[tracker]-min[tracker])+1);
-	
-	g.setColor(Color.black);
-	for (int i = min[tracker]; i <= max[tracker]; i++) {
-	    g.drawString(""+i,5,(iSize-15)-(stepY*(i-min[tracker])));
-	}
-	
-	int startGeneration = Integer.max(minInformation.size()-GRAPH_GENERATIONS,0);
-	g.setColor(Color.black);
-	g.drawLine(20,0,20,(iSize-20));
-	g.drawLine(20,(iSize-20),iSize,(iSize-20));
-	
-	
-	int lastX = -1;
-	int lastMinY = -1;
-	int lastAvgY = -1;
-	int lastMaxY = -1;
-	
-	for (int i = startGeneration; i < minInformation.size(); i++) {
-	    
-	    int curX = 20 + stepX*(i-startGeneration);
-	    int curMinY = (iSize-20)-(stepY*(minInformation.get(i)[tracker]-min[tracker]));
-	    int curMaxY = (iSize-20)-(stepY*(maxInformation.get(i)[tracker]-min[tracker]));
-	    int curAvgY = (int)((iSize-20)-(stepY*(avgInformation.get(i)[tracker]-min[tracker])));
-	    
-	    if (lastMinY == lastMaxY && curMinY == curMaxY) {
-		g.setColor(Color.green);
-		if (lastMaxY > 0) {
-		    g.drawLine(lastX,lastMaxY,curX,curMaxY);
-		}
-	    } else {
-		g.setColor(Color.blue);
-		if (lastMaxY > 0) {
-		    g.drawLine(lastX,lastMaxY,curX,curMaxY);
-		}
-
-		g.setColor(Color.red);
-		if (lastMinY > 0) {
-		    g.drawLine(lastX,lastMinY,curX,curMinY);
-		}
-		
-		g.setColor(Color.orange);
-		if (lastAvgY > 0) {
-		    g.drawLine(lastX,lastAvgY,curX,curAvgY);
-		}
-	    }
-	    
-	    lastX = curX;
-	    lastMinY = curMinY;
-	    lastMaxY = curMaxY;
-	    lastAvgY = curAvgY;
-	}
-	
-	for (int i = startGeneration; i < minInformation.size(); i++) {
-	    
-	    int curX = 20 + stepX*(i-startGeneration);
-	    int curMinY = (iSize-20)-(stepY*(minInformation.get(i)[tracker]-min[tracker]));
-	    int curMaxY = (iSize-20)-(stepY*(maxInformation.get(i)[tracker]-min[tracker]));
-	    int curAvgY = (int)((iSize-20)-(stepY*(avgInformation.get(i)[tracker]-min[tracker])));
-	    
-	    if (i % 5 == 0) {
-		g.setColor(Color.black);
-		g.drawString(""+i,curX-5,(iSize-5));
-	    }
-	    
-	    if (curMinY != curMaxY) {
-		g.setColor(Color.blue);
-		g.fillRect(curX-(dotSize/2), curMaxY-(dotSize/2), dotSize, dotSize);
-
-		g.setColor(Color.red);
-		g.fillRect(curX-(dotSize/2), curMinY-(dotSize/2), dotSize, dotSize);
-		
-		g.setColor(Color.orange);
-		g.fillRect(curX-(dotSize/2), curAvgY-(dotSize/2), dotSize, dotSize);
-	    } else {
-		g.setColor(Color.green);
-		g.fillRect(curX-(dotSize/2), curMinY-(dotSize/2), dotSize, dotSize);
-	    }
-	}
 	
 	try {
-	    if (lastMinY != lastMaxY) {
-		g.setColor(Color.blue);
-		g.drawString(""+maxQuantityInformation.get(maxQuantityInformation.size()-1)[tracker],lastX+10,lastMaxY);
 
-		g.setColor(Color.red);
-		g.drawString(""+minQuantityInformation.get(minQuantityInformation.size()-1)[tracker],lastX+10,lastMinY);
-	    } else {
-		g.setColor(Color.green);
-		g.drawString(""+minQuantityInformation.get(minQuantityInformation.size()-1)[tracker],lastX+10,lastMinY);
+	    int dotSize = 5;
+
+	    int stepX = (iSize-20)/GRAPH_GENERATIONS;
+	    int stepY = (iSize-20)/((max[tracker]-min[tracker])+1);
+
+	    g.setColor(Color.black);
+	    for (int i = min[tracker]; i <= max[tracker]; i++) {
+		g.drawString(""+i,5,(iSize-15)-(stepY*(i-min[tracker])));
 	    }
-	} catch (Exception ex) { }
-		
+
+	    int startGeneration = Integer.max(minInformation.size()-GRAPH_GENERATIONS,0);
+	    g.setColor(Color.black);
+	    g.drawLine(20,0,20,(iSize-20));
+	    g.drawLine(20,(iSize-20),iSize,(iSize-20));
+
+
+	    int lastX = -1;
+	    int lastMinY = -1;
+	    int lastAvgY = -1;
+	    int lastMaxY = -1;
+
+	    for (int i = startGeneration; i < minInformation.size(); i++) {
+
+		int curX = 20 + stepX*(i-startGeneration);
+		int curMinY = (iSize-20)-(stepY*(minInformation.get(i)[tracker]-min[tracker]));
+		int curMaxY = (iSize-20)-(stepY*(maxInformation.get(i)[tracker]-min[tracker]));
+		int curAvgY = (int)((iSize-20)-(stepY*(avgInformation.get(i)[tracker]-min[tracker])));
+
+		if (lastMinY == lastMaxY && curMinY == curMaxY) {
+		    g.setColor(Color.green);
+		    if (lastMaxY > 0) {
+			g.drawLine(lastX,lastMaxY,curX,curMaxY);
+		    }
+		} else {
+		    g.setColor(Color.blue);
+		    if (lastMaxY > 0) {
+			g.drawLine(lastX,lastMaxY,curX,curMaxY);
+		    }
+
+		    g.setColor(Color.red);
+		    if (lastMinY > 0) {
+			g.drawLine(lastX,lastMinY,curX,curMinY);
+		    }
+
+		    g.setColor(Color.orange);
+		    if (lastAvgY > 0) {
+			g.drawLine(lastX,lastAvgY,curX,curAvgY);
+		    }
+		}
+
+		lastX = curX;
+		lastMinY = curMinY;
+		lastMaxY = curMaxY;
+		lastAvgY = curAvgY;
+	    }
+
+	    for (int i = startGeneration; i < minInformation.size(); i++) {
+
+		int curX = 20 + stepX*(i-startGeneration);
+		int curMinY = (iSize-20)-(stepY*(minInformation.get(i)[tracker]-min[tracker]));
+		int curMaxY = (iSize-20)-(stepY*(maxInformation.get(i)[tracker]-min[tracker]));
+		int curAvgY = (int)((iSize-20)-(stepY*(avgInformation.get(i)[tracker]-min[tracker])));
+
+		if (i % 5 == 0) {
+		    g.setColor(Color.black);
+		    g.drawString(""+i,curX-5,(iSize-5));
+		}
+
+		if (curMinY != curMaxY) {
+		    g.setColor(Color.blue);
+		    g.fillRect(curX-(dotSize/2), curMaxY-(dotSize/2), dotSize, dotSize);
+
+		    g.setColor(Color.red);
+		    g.fillRect(curX-(dotSize/2), curMinY-(dotSize/2), dotSize, dotSize);
+
+		    g.setColor(Color.orange);
+		    g.fillRect(curX-(dotSize/2), curAvgY-(dotSize/2), dotSize, dotSize);
+		} else {
+		    g.setColor(Color.green);
+		    g.fillRect(curX-(dotSize/2), curMinY-(dotSize/2), dotSize, dotSize);
+		}
+	    }
+
+	    try {
+		if (lastMinY != lastMaxY) {
+		    g.setColor(Color.blue);
+		    g.drawString(""+maxQuantityInformation.get(maxQuantityInformation.size()-1)[tracker],lastX+10,lastMaxY);
+
+		    g.setColor(Color.red);
+		    g.drawString(""+minQuantityInformation.get(minQuantityInformation.size()-1)[tracker],lastX+10,lastMinY);
+		} else {
+		    g.setColor(Color.green);
+		    g.drawString(""+minQuantityInformation.get(minQuantityInformation.size()-1)[tracker],lastX+10,lastMinY);
+		}
+	    } catch (Exception ex2) { }
+	} catch (Exception ex2) { }
 	
 	return img;
     }
